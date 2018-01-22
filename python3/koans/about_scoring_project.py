@@ -34,10 +34,45 @@ from runner.koan import *
 
 def score(dice):
     # You need to write this method
-    pass
+    #pass
+
+# make the dice rolls into a dictionary counting up the number of each rolls' occurrences
+    rolls = dict()
+    for die in list(dice):
+        if not die in rolls:
+            rolls[die] = 1
+        else:
+            rolls[die] += 1
+
+# apply scoring rules to the dictionary of dice rolls
+    total = 0
+    if rolls == False:
+        pass
+    else:
+        for die in rolls:
+            if die == 1:
+                while rolls[die] >= 3: #for 3x1
+                    total += 1000
+                    rolls[die] -= 3
+                else:
+                    total += rolls[die] * 100 #for remaining 1s
+            elif die == 5:
+                while rolls[die] >= 3: #for 3x5
+                    total += 500
+                    rolls[die] -= 3
+                else:
+                    total += rolls[die] * 50 #for remaining 5s
+            else:
+                if rolls[die] >= 3: #for all other 3-of-a-kinds
+                    total += die * 100
+                else:
+                    pass
+
+    return total
 
 class AboutScoringProject(Koan):
     def test_score_of_an_empty_list_is_zero(self):
+#        pass
         self.assertEqual(0, score([]))
 
     def test_score_of_a_single_roll_of_5_is_50(self):
