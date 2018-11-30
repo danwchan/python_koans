@@ -75,19 +75,19 @@ class AboutClassAttributes(Koan):
             return "classmethod growl, arg: cls=" + cls.__name__
 
     def test_since_classes_are_objects_you_can_define_singleton_methods_on_them_too(self):
-        self.assertRegex(self.Dog2.growl(), __)
+        self.assertRegex(self.Dog2.growl(), 'thod grow')
 
     def test_classmethods_are_not_independent_of_instance_methods(self):
         fido = self.Dog2()
-        self.assertRegex(fido.growl(), __)
-        self.assertRegex(self.Dog2.growl(), __)
+        self.assertRegex(fido.growl(), 'thod grow')
+        self.assertRegex(self.Dog2.growl(), 'thod grow')
 
     def test_staticmethods_are_unbound_functions_housed_in_a_class(self):
-        self.assertRegex(self.Dog2.bark(), __)
+        self.assertRegex(self.Dog2.bark(), 'thod bar')
 
     def test_staticmethods_also_overshadow_instance_methods(self):
         fido = self.Dog2()
-        self.assertRegex(fido.bark(), __)
+        self.assertRegex(fido.bark(), 'thod bar')
 
     # ------------------------------------------------------------------
 
@@ -114,20 +114,20 @@ class AboutClassAttributes(Koan):
 
     def test_classmethods_can_not_be_used_as_properties(self):
         fido = self.Dog3()
-        with self.assertRaises(___): fido.name = "Fido"
+        with self.assertRaises(TypeError): fido.name = "Fido"
 
     def test_classes_and_instances_do_not_share_instance_attributes(self):
         fido = self.Dog3()
         fido.set_name_from_instance("Fido")
         fido.set_name("Rover")
-        self.assertEqual(__, fido.get_name_from_instance())
-        self.assertEqual(__, self.Dog3.get_name())
+        self.assertEqual('Fido', fido.get_name_from_instance())
+        self.assertEqual('Rover', self.Dog3.get_name())
 
     def test_classes_and_instances_do_share_class_attributes(self):
         fido = self.Dog3()
         fido.set_name("Fido")
-        self.assertEqual(__, fido.get_name())
-        self.assertEqual(__, self.Dog3.get_name())
+        self.assertEqual('Fido', fido.get_name())
+        self.assertEqual('Fido', self.Dog3.get_name())
 
     # ------------------------------------------------------------------
 
@@ -142,13 +142,13 @@ class AboutClassAttributes(Koan):
         a_static_method = staticmethod(a_static_method)
 
     def test_you_can_define_class_methods_without_using_a_decorator(self):
-        self.assertEqual(__, self.Dog4.a_class_method())
+        self.assertEqual('dogs class method', self.Dog4.a_class_method())
 
     def test_you_can_define_static_methods_without_using_a_decorator(self):
-        self.assertEqual(__, self.Dog4.a_static_method())
+        self.assertEqual('dogs static method', self.Dog4.a_static_method())
 
     # ------------------------------------------------------------------
 
     def test_heres_an_easy_way_to_explicitly_call_class_methods_from_instance_methods(self):
         fido = self.Dog4()
-        self.assertEqual(__, fido.__class__.a_class_method())
+        self.assertEqual('dogs class method', fido.__class__.a_class_method())
