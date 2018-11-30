@@ -13,36 +13,36 @@ class AboutClassAttributes(Koan):
 
     def test_objects_are_objects(self):
         fido = self.Dog()
-        self.assertEqual(__, isinstance(fido, object))
+        self.assertEqual(True, isinstance(fido, object))
 
     def test_classes_are_types(self):
-        self.assertEqual(__, self.Dog.__class__ == type)
+        self.assertEqual(True, self.Dog.__class__ == type)
 
     def test_classes_are_objects_too(self):
-        self.assertEqual(__, issubclass(self.Dog, object))
+        self.assertEqual(True, issubclass(self.Dog, object))
 
     def test_objects_have_methods(self):
         fido = self.Dog()
-        self.assertEqual(__, len(dir(fido)))
+        self.assertEqual(26, len(dir(fido)))
 
     def test_classes_have_methods(self):
-        self.assertEqual(__, len(dir(self.Dog)))
+        self.assertEqual(26, len(dir(self.Dog)))
 
     def test_creating_objects_without_defining_a_class(self):
         singularity = object()
-        self.assertEqual(__, len(dir(singularity)))
+        self.assertEqual(23, len(dir(singularity)))
 
     def test_defining_attributes_on_individual_objects(self):
         fido = self.Dog()
         fido.legs = 4
 
-        self.assertEqual(__, fido.legs)
+        self.assertEqual(4, fido.legs)
 
     def test_defining_functions_on_individual_objects(self):
         fido = self.Dog()
         fido.wag = lambda : 'fidos wag'
 
-        self.assertEqual(__, fido.wag())
+        self.assertEqual('fidos wag', fido.wag())
 
     def test_other_objects_are_not_affected_by_these_singleton_functions(self):
         fido = self.Dog()
@@ -52,7 +52,7 @@ class AboutClassAttributes(Koan):
             return 'fidos wag'
         fido.wag = wag
 
-        with self.assertRaises(___): rover.wag()
+        with self.assertRaises(AttributeError): rover.wag()
 
     # ------------------------------------------------------------------
 
