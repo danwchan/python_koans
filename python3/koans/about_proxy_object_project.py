@@ -21,37 +21,55 @@ from runner.koan import *
 class Proxy:
     def __init__(self, target_object):
         # WRITE CODE HERE
-        self.messages = {}
+        self._msglog = dict()
         #initialize '_obj' attribute last. Trust me on this!
         self._obj = target_object
+        print('init called and run')
 
     # WRITE CODE HERE
-    def sanitize_method_and_property(func):
-        def func_wrapper(self, name):
-            msg_call = self._obj.__getattribute__(self, name)
-            if hasattr(msg_call, '__call__'):
-                msg_call = msg_call.__name__
-            return func_wrapper(self, msg_call)
-
-    @sanitize_method_and_property
-    def __getattribute__(self, msg_call):
-        if msg_call in self.messages: #gotta call the __name__ for methods
-            self.messages[msg_call] += 1
+    def __setattr__(self, msg_call, value):
+        if msg_call in ['_msglog', '_obj']:
+            
+#            print('setattr: {} exceptions for init'.format(msg_call))
+            return super().__setattr__(msg_call, value)
+        
         else:
-            self.messages.update({msg_call : 0})
+            
+            if msg_call in self._msglog:
+                self._msglog[msg_call] += 1
+            else:
+                self._msglog.update({msg_call : 1})
+                
+#            print('setattr: running on the instance {}'.format(self._obj.__str__()))
+            return setattr(self._obj, msg_call, value)
 
-        return self._obj.__getattribute__(self, msg_call)
+    def __getattr__(self, msg_call):
+        if msg_call in ['_msglog', '_obj']:
+            
+#            print('getattr: {} exceptions for init'.format(msg_call))
+            return super().__getattr__(msg_call)
+        
+        else:
+            
+            if msg_call in self._msglog:
+                self._msglog[msg_call] += 1
+            else:
+                self._msglog.update({msg_call : 1})
+
+#            print('getattr: running on the instance {}'.format(self._obj.__str__()))
+            return getattr(self._obj, msg_call)
 
     def messages(self):
-        return [key for key in messages.keys()]
+        return [key for key in self._msglog.keys()]
 
-    @sanitize_method_and_property
     def was_called(self, msg_call):
-        return msg_call in messages
+        return msg_call in self._msglog
 
-    @sanitize_method_and_property
     def number_of_times_called(self, msg_call):
-        return [count for key, count in messages.items() if key == msg_call]
+        try:
+            return self._msglog[msg_call]
+        except:
+            return 0
 
 # The proxy object should pass the following Koan:
 #

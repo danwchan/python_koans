@@ -11,6 +11,16 @@
 # is a free form assignment, so approach it however you desire.
 
 from runner.koan import *
+from about_scoring_project import score
+from about_dice_project import DiceSet
+
+class Player:
+    def __init__(self):
+        self.name = 'Default name, please set name of player'
+
+class GreedGame:
+    def __init__(self):
+        self.players = list()
 
 class AboutExtraCredit(Koan):
     # Write tests here. If you need extra test classes add them to the
