@@ -16,7 +16,18 @@ from about_dice_project import DiceSet
 
 class GreedPlayer:
     def __init__(self):
+#    def __init__(self, playerid):
+#        self._id = playerid
+        self._outcome = "undecided"
+        self._score = None
         self.name = None
+
+    @property
+    def outcome(self):
+        return self._outcome
+
+    def create_player(self, name):
+        self.name = name
 
 class GreedGame:
     def __init__(self):
@@ -25,14 +36,17 @@ class GreedGame:
     def start_game(self, players = 2):
 
         prompt = "> "
-        confrim = "n"
 
-        for playerid in ["player_{}".format(player) for player in range(1, players)]:
+        for playerid in ["player_{}".format(player) for player in range(1, players + 1)]:
+            confirm = "n"
+            print(dir(playerid))
             playerid = GreedPlayer()
-            while confrim != "y":
-                print("Welcome {} to a game of Greed!. Please enter your name".format(playerid))
-                playerid.name = input(prompt)
-                print("Hello, {}. Did I get that right? Are you ready to get greedy?".format(playerid.name))
+            print(dir(playerid))
+            while confirm != "y":
+                print("Welcome to a game of Greed!. Please enter your name, {}".format(playerid))
+                playerid.create_player(input(prompt))
+                print("Hello, {}. Did I get that right? Are you ready to get greedy (y/n)?".format(playerid.name))
+                confirm = input(prompt)
                 if confirm == "y":
                     break
 
@@ -44,5 +58,15 @@ class AboutExtraCredit(Koan):
 
     def test_players_can_be_created_and_edited(self):
         player1 = GreedPlayer()
+
+        self.assertEquals(Greedplayer._outcome = "undecided")
+
+        player1.create_player("Daniel Winston Chan")
+
+        self.assertEquals(player1.name, "Daniel Winston Chan")
+
+    def test_game_can_create_players(self):
+        game1 = GreedGame()
+        game1.start_game()
 
 # Play a game of greed
